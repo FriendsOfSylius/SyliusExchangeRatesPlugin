@@ -45,6 +45,19 @@ class ExchangeRatesImporterSpec extends ObjectBehavior
         $this->import();
     }
 
+    function it_does_not_update_anything_if_there_is_only_one_currency_configured(
+
+        RepositoryInterface $currencyRepository,
+        ObjectManager $exchangeRateManager,
+        CurrencyInterface $euro
+    ) {
+        $currencyRepository->findAll()->willReturn([$euro]);
+
+        $exchangeRateManager->flush()->shouldNotBeCalled();
+
+        $this->import();
+    }
+
     function it_updates_the_exchange_ratio_of_two_currencies_based_on_a_provider(
         RepositoryInterface $currencyRepository,
         ObjectManager $exchangeRateManager,

@@ -4,6 +4,5 @@ namespace Acme\SyliusExamplePlugin\Import;
 
 interface ExchangeRateProviderInterface
 {
-
-    public function getRatio($argument1, $argument2);
+    public function getRatio($sourceCurrency, $targetCurrency);
 }

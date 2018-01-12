@@ -44,7 +44,7 @@ class ExchangeRatesImporter implements ExchangeRatesImporterInterface
     {
         $currencies = $this->currencyRepository->findAll();
 
-        if (empty($currencies)) {
+        if (2 > count($currencies)) {
             return;
         }
 

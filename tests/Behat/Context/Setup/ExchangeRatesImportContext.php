@@ -5,7 +5,7 @@ namespace Tests\Acme\SyliusExamplePlugin\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Acme\SyliusExamplePlugin\Import\ExchangeRatesImporterInterface;
-use Acme\SyliusExamplePlugin\Import\TestExchangeRatesProviderInterface;
+use Acme\SyliusExamplePlugin\Import\TestExchangeRateProviderInterface;
 
 class ExchangeRatesImportContext implements Context
 {
@@ -14,7 +14,7 @@ class ExchangeRatesImportContext implements Context
 
     public function __construct(
         ExchangeRatesImporterInterface $exchangeRatesImporter,
-        TestExchangeRatesProviderInterface $exchangeRatesProvider
+        TestExchangeRateProviderInterface $exchangeRatesProvider
     ) {
         $this->exchangeRatesImporter = $exchangeRatesImporter;
         $this->exchangeRatesProvider = $exchangeRatesProvider;
