@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Acme\SyliusExamplePlugin\Import\ExchangeRatesImporterInterface;
 use Acme\SyliusExamplePlugin\Import\TestExchangeRateProviderInterface;
+use Behat\Gherkin\Node\TableNode;
 
 class ExchangeRatesImportContext implements Context
 {
@@ -26,6 +27,16 @@ class ExchangeRatesImportContext implements Context
     public function reliableSourceSetTheExchangeRateBetweenAndTo($currencyA, $currencyB, $ratio)
     {
         $this->exchangeRatesProvider->setRatioBetween($currencyA, $currencyB, $ratio);
+    }
+
+    /**
+     * @Given reliable source set the following exchanges rates:
+     */
+    public function reliableSourceSetTheFollowingExchangesRates(TableNode $table)
+    {
+        foreach ($table->getHash() as $exchangeRate) {
+           $this->reliableSourceSetTheExchangeRateBetweenAndTo($exchangeRate['from'], $exchangeRate['to'], $exchangeRate['ratio']);
+        }
     }
 
     /**
