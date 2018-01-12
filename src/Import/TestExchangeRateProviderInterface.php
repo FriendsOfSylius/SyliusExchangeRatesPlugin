@@ -2,7 +2,7 @@
 
 namespace Acme\SyliusExamplePlugin\Import;
 
-interface TestExchangeRateProviderInterface
+interface TestExchangeRateProviderInterface extends ExchangeRateProviderInterface
 {
     public function setRatioBetween($sourceCurrency, $targetCurrency, $ratio);
 }

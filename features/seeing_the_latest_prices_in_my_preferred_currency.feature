@@ -6,9 +6,9 @@ Feature: Seeing the latest prices in my preferred currency
 
     Scenario: Seeing the product price calculated with reliable exchange rate
         Given the store operates on a single channel in "United States"
-        And that channel allows to shop using the "Euro" currency
+        And that channel allows to shop using the "EUR" currency
         And the store has a product "Liip T-Shirt" priced at "$9.99"
-        And reliable source set the exchange rate between "US Dollar" and "Euro" to "0.82"
+        And reliable source set the exchange rate between "USD" and "EUR" to "0.82"
         And last night the store updated exchange rates based on this source
         And I have product "Liip T-Shirt" in the cart
         When I switch to the "EUR" currency

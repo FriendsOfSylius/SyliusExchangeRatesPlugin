@@ -12,6 +12,7 @@ use Sylius\Component\Currency\Model\CurrencyInterface;
 use Sylius\Component\Currency\Model\ExchangeRateInterface;
 use Sylius\Component\Currency\Repository\ExchangeRateRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\Component\Resource\Factory\FactoryInterface;
 
 class ExchangeRatesImporterSpec extends ObjectBehavior
 {
@@ -19,9 +20,10 @@ class ExchangeRatesImporterSpec extends ObjectBehavior
         RepositoryInterface $currencyRepository,
         ObjectManager $exchangeRateManager,
         ExchangeRateProviderInterface $exchangeRateProvider,
-        ExchangeRateRepositoryInterface $exchangeRateRepository
+        ExchangeRateRepositoryInterface $exchangeRateRepository,
+        FactoryInterface $exchangeRateFactory
     ) {
-        $this->beConstructedWith($currencyRepository, $exchangeRateManager, $exchangeRateProvider, $exchangeRateRepository);
+        $this->beConstructedWith($currencyRepository, $exchangeRateManager, $exchangeRateProvider, $exchangeRateRepository, $exchangeRateFactory);
     }
 
     function it_is_initializable()
@@ -76,6 +78,35 @@ class ExchangeRatesImporterSpec extends ObjectBehavior
         $exchangeRateRepository->findOneWithCurrencyPair('EUR', 'CHF')->willReturn($exchangeRate);
 
         $exchangeRate->setRatio(1.17)->shouldBeCalled();
+        $exchangeRateManager->flush()->shouldBeCalled();
+
+        $this->import();
+    }
+
+    function it_creates_an_exchange_rate_if_it_does_not_exist_yet(
+        RepositoryInterface $currencyRepository,
+        ObjectManager $exchangeRateManager,
+        CurrencyInterface $euro,
+        CurrencyInterface $swissFranc,
+        ExchangeRateProviderInterface $exchangeRateProvider,
+        ExchangeRateRepositoryInterface $exchangeRateRepository,
+        ExchangeRateInterface $exchangeRate,
+        FactoryInterface $exchangeRateFactory
+    ) {
+        $currencyRepository->findAll()->willReturn([$euro, $swissFranc]);
+        $euro->getCode()->willReturn('EUR');
+        $swissFranc->getCode()->willReturn('CHF');
+
+        $exchangeRateProvider->getRatio('EUR', 'CHF')->willReturn(1.17);
+
+        $exchangeRateRepository->findOneWithCurrencyPair('EUR', 'CHF')->willReturn(null);
+        $exchangeRateFactory->createNew()->willReturn($exchangeRate);
+
+        $exchangeRate->setSourceCurrency($euro)->shouldBeCalled();
+        $exchangeRate->setTargetCurrency($swissFranc)->shouldBeCalled();
+        $exchangeRate->setRatio(1.17)->shouldBeCalled();
+
+        $exchangeRateManager->persist($exchangeRate)->shouldBeCalled();
         $exchangeRateManager->flush()->shouldBeCalled();
 
         $this->import();

@@ -15,11 +15,6 @@ class TestExchangeRateProviderSpec extends ObjectBehavior
         $this->shouldHaveType(TestExchangeRateProvider::class);
     }
 
-    function it_exchange_rate_provider()
-    {
-        $this->shouldImplement(ExchangeRateProviderInterface::class);
-    }
-
     function it_is_for_testing_purposes()
     {
         $this->shouldImplement(TestExchangeRateProviderInterface::class);
@@ -41,6 +36,12 @@ class TestExchangeRateProviderSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_there_is_no_ratio_set_for_a_specific_pair()
     {
-        
+        $this->setRatioBetween('EUR', 'USD', 1.12);
+        $this->setRatioBetween('CHF', 'USD', 1.01);
+
+        $this
+            ->shouldThrow(new \InvalidArgumentException('There is no ratio set for CHF and EUR.'))
+            ->during('getRatio', ['CHF', 'EUR'])
+        ;
     }
 }

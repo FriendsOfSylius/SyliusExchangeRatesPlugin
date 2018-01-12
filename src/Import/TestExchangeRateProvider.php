@@ -2,7 +2,7 @@
 
 namespace Acme\SyliusExamplePlugin\Import;
 
-class TestExchangeRateProvider implements ExchangeRateProviderInterface, TestExchangeRateProviderInterface
+class TestExchangeRateProvider implements TestExchangeRateProviderInterface
 {
     private $ratios = [];
 
@@ -10,6 +10,10 @@ class TestExchangeRateProvider implements ExchangeRateProviderInterface, TestExc
     {
         if (empty($this->ratios)) {
             throw new \LogicException('You first need to define the test ratios.');
+        }
+
+        if (!array_key_exists($this->getPairId($sourceCurrency, $targetCurrency), $this->ratios)) {
+            throw new \InvalidArgumentException(sprintf('There is no ratio set for %s and %s.', $sourceCurrency, $targetCurrency));
         }
 
         return $this->ratios[$this->getPairId($sourceCurrency, $targetCurrency)];

@@ -10,6 +10,8 @@
             <tag name="fob.context_service" />
         </service>
         <service id="acme_sylius_example.context.setup.exchange_rates_import" class="Tests\Acme\SyliusExamplePlugin\Behat\Context\Setup\ExchangeRatesImportContext">
+            <argument type="service" id="__symfony__.app.exchange_rates_importer" />
+            <argument type="service" id="__symfony__.app.exchange_rate_provider" />
             <tag name="fob.context_service" />
         </service>
 

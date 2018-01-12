@@ -21,11 +21,11 @@ class ExchangeRatesImportContext implements Context
     }
 
     /**
-     * @Given reliable source set the exchange rate between :sourceCurrency and :targetCurrency to :ratio
+     * @Given reliable source set the exchange rate between :currencyA and :currencyB to :ratio
      */
-    public function reliableSourceSetTheExchangeRateBetweenAndTo($sourceCurrency, $targetCurrency, $ratio)
+    public function reliableSourceSetTheExchangeRateBetweenAndTo($currencyA, $currencyB, $ratio)
     {
-        $this->exchangeRatesProvider->setRatioBetween($sourceCurrency, $targetCurrency, $ratio);
+        $this->exchangeRatesProvider->setRatioBetween($currencyA, $currencyB, $ratio);
     }
 
     /**

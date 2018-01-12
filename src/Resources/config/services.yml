@@ -1,0 +1,13 @@
+services:
+    app.exchange_rates_importer:
+        class: Acme\SyliusExamplePlugin\Import\ExchangeRatesImporter
+        arguments:
+            - "@sylius.repository.currency"
+            - "@sylius.manager.exchange_rate"
+            - "@app.exchange_rate_provider"
+            - "@sylius.repository.exchange_rate"
+
+    app.exchange_rate_provider:
+        alias: app.exchange_rate_provider.test
+    app.exchange_rate_provider.test:
+        class: Acme\SyliusExamplePlugin\Import\TestExchangeRateProvider
