@@ -111,4 +111,39 @@ class ExchangeRatesImporterSpec extends ObjectBehavior
 
         $this->import();
     }
+
+    function it_updates_exchange_rates_correctly_when_there_are_more_than_2_currencies(
+        RepositoryInterface $currencyRepository,
+        ObjectManager $exchangeRateManager,
+        CurrencyInterface $euro,
+        CurrencyInterface $swissFranc,
+        CurrencyInterface $polishZloty,
+        ExchangeRateProviderInterface $exchangeRateProvider,
+        ExchangeRateRepositoryInterface $exchangeRateRepository,
+        ExchangeRateInterface $EUR2CHF,
+        ExchangeRateInterface $EUR2PLN,
+        ExchangeRateInterface $PLN2CHF
+    )
+    {
+        $currencyRepository->findAll()->willReturn([$euro, $swissFranc, $polishZloty]);
+        $euro->getCode()->willReturn('EUR');
+        $swissFranc->getCode()->willReturn('CHF');
+        $polishZloty->getCode()->willReturn('PLN');
+
+        $exchangeRateProvider->getRatio('EUR', 'CHF')->willReturn(1.17);
+        $exchangeRateProvider->getRatio('EUR', 'PLN')->willReturn(4.16);
+        $exchangeRateProvider->getRatio('PLN', 'CHF')->willReturn(0.28);
+
+        $exchangeRateRepository->findOneWithCurrencyPair('EUR', 'CHF')->willReturn($EUR2CHF);
+        $exchangeRateRepository->findOneWithCurrencyPair('EUR', 'PLN')->willReturn($EUR2PLN);
+        $exchangeRateRepository->findOneWithCurrencyPair('PLN', 'CHF')->willReturn($PLN2CHF);
+
+        $EUR2CHF->setRatio(1.17)->shouldBeCalled();
+        $EUR2PLN->setRatio(4.16)->shouldBeCalled();
+        $PLN2CHF->setRatio(0.28)->shouldBeCalled();
+
+        $exchangeRateManager->flush()->shouldBeCalled();
+
+        $this->import();
+    }
 }

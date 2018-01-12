@@ -6,6 +6,7 @@ services:
             - "@sylius.manager.exchange_rate"
             - "@app.exchange_rate_provider"
             - "@sylius.repository.exchange_rate"
+            - "@sylius.factory.exchange_rate"
 
     app.exchange_rate_provider:
         alias: app.exchange_rate_provider.test

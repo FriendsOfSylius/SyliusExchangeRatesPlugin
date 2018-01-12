@@ -57,8 +57,10 @@ class ExchangeRatesImporter implements ExchangeRatesImporterInterface
             return;
         }
 
-        $codes = [$currencies[0]->getCode(), $currencies[1]->getCode()];
-        $ratio = $this->exchangeRateProvider->getRatio($codes[0], $codes[1]);
+        $codes = [];
+
+        foreach ($currencies as $i => $currency) {
+        }
 
         $exchangeRate = $this->exchangeRateRepository->findOneWithCurrencyPair($codes[0], $codes[1]);
 
