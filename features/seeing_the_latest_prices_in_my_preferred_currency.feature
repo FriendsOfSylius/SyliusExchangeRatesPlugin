@@ -20,6 +20,7 @@ Feature: Seeing the latest prices in my preferred currency
         And the store has a product "Liip T-Shirt" priced at "$9.99"
         And reliable source set the exchange rate between "USD" and "EUR" to "0.82"
         And reliable source set the exchange rate between "USD" and "CHF" to "0.97"
+        And reliable source set the exchange rate between "EUR" and "CHF" to "0.89"
         And last night the store updated exchange rates based on this source
         And I have product "Liip T-Shirt" in the cart
         When I switch to the "CHF" currency

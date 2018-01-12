@@ -3,6 +3,7 @@
 namespace Acme\SyliusExamplePlugin\Import;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Sylius\Component\Currency\Model\CurrencyInterface;
 use Sylius\Component\Currency\Repository\ExchangeRateRepositoryInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -57,24 +58,38 @@ class ExchangeRatesImporter implements ExchangeRatesImporterInterface
             return;
         }
 
-        $codes = [];
+        $maxIterationCode = count($currencies) - 1;
 
-        foreach ($currencies as $i => $currency) {
+        /** @var CurrencyInterface $sourceCurrency */
+        foreach ($currencies as $i => $sourceCurrency) {
+            $sourceCurrencyCode = $sourceCurrency->getCode();
+
+            for ($j = $i + 1; $j <= $maxIterationCode; ++$j) {
+                $targetCurrency = $currencies[$j];
+                $targetCurrencyCode = $targetCurrency->getCode();
+
+                $ratio = $this->exchangeRateProvider->getRatio($sourceCurrencyCode, $targetCurrencyCode);
+
+                /** @var ExchangeRateInterface $exchangeRate */
+                $exchangeRate = $this->exchangeRateRepository->findOneWithCurrencyPair($sourceCurrencyCode, $targetCurrencyCode);
+
+                if (null === $exchangeRate) {
+                    $exchangeRate = $this->exchangeRateFactory->createNew();
+                    $exchangeRate->setSourceCurrency($sourceCurrency);
+                    $exchangeRate->setTargetCurrency($targetCurrency);
+
+                    $this->exchangeRateManager->persist($exchangeRate);
+                }
+
+                $exchangeRate->setRatio($ratio);
+            }
         }
-
-        $exchangeRate = $this->exchangeRateRepository->findOneWithCurrencyPair($codes[0], $codes[1]);
-
-        if (null === $exchangeRate) {
-            /** @var ExchangeRateInterface $exchangeRate */
-            $exchangeRate = $this->exchangeRateFactory->createNew();
-            $exchangeRate->setSourceCurrency($currencies[0]);
-            $exchangeRate->setTargetCurrency($currencies[1]);
-
-            $this->exchangeRateManager->persist($exchangeRate);
-        }
-
-        $exchangeRate->setRatio($ratio);
 
         $this->exchangeRateManager->flush();
+    }
+
+    private function getPairs(array $codes)
+    {
+
     }
 }

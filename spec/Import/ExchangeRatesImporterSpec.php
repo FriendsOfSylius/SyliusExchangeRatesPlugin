@@ -125,17 +125,17 @@ class ExchangeRatesImporterSpec extends ObjectBehavior
         ExchangeRateInterface $PLN2CHF
     )
     {
-        $currencyRepository->findAll()->willReturn([$euro, $swissFranc, $polishZloty]);
+        $currencyRepository->findAll()->willReturn([$euro, $polishZloty, $swissFranc]);
         $euro->getCode()->willReturn('EUR');
         $swissFranc->getCode()->willReturn('CHF');
         $polishZloty->getCode()->willReturn('PLN');
 
-        $exchangeRateProvider->getRatio('EUR', 'CHF')->willReturn(1.17);
         $exchangeRateProvider->getRatio('EUR', 'PLN')->willReturn(4.16);
+        $exchangeRateProvider->getRatio('EUR', 'CHF')->willReturn(1.17);
         $exchangeRateProvider->getRatio('PLN', 'CHF')->willReturn(0.28);
 
-        $exchangeRateRepository->findOneWithCurrencyPair('EUR', 'CHF')->willReturn($EUR2CHF);
         $exchangeRateRepository->findOneWithCurrencyPair('EUR', 'PLN')->willReturn($EUR2PLN);
+        $exchangeRateRepository->findOneWithCurrencyPair('EUR', 'CHF')->willReturn($EUR2CHF);
         $exchangeRateRepository->findOneWithCurrencyPair('PLN', 'CHF')->willReturn($PLN2CHF);
 
         $EUR2CHF->setRatio(1.17)->shouldBeCalled();
