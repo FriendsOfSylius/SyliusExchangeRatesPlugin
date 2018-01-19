@@ -2,6 +2,7 @@
 
 namespace spec\Acme\SyliusExamplePlugin\Import;
 
+use Acme\SyliusExamplePlugin\Import\ExchangeRateProviderException;
 use Acme\SyliusExamplePlugin\Import\ExchangeRatesImporter;
 use Acme\SyliusExamplePlugin\Import\ExchangeRatesImporterInterface;
 use Acme\SyliusExamplePlugin\Import\ExchangeRateProviderInterface;
@@ -143,6 +144,26 @@ class ExchangeRatesImporterSpec extends ObjectBehavior
         $PLN2CHF->setRatio(0.28)->shouldBeCalled();
 
         $exchangeRateManager->flush()->shouldBeCalled();
+
+        $this->import();
+    }
+
+    function it_skips_currencies_when_the_provider_fails(
+        RepositoryInterface $currencyRepository,
+        ObjectManager $exchangeRateManager,
+        CurrencyInterface $euro,
+        CurrencyInterface $swissFranc,
+        ExchangeRateProviderInterface $exchangeRateProvider,
+        ExchangeRateRepositoryInterface $exchangeRateRepository
+    ) {
+        $currencyRepository->findAll()->willReturn([$euro, $swissFranc]);
+        $euro->getCode()->willReturn('EUR');
+        $swissFranc->getCode()->willReturn('CHF');
+
+        $exchangeRateProvider->getRatio('EUR', 'CHF')->willThrow(new ExchangeRateProviderException());
+
+        $exchangeRateRepository->findOneWithCurrencyPair('EUR', 'CHF')->shouldNotBeCalled();
+        $exchangeRateManager->flush()->shouldNotBeCalled();
 
         $this->import();
     }

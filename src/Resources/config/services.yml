@@ -9,6 +9,11 @@ services:
             - "@sylius.factory.exchange_rate"
 
     app.exchange_rate_provider:
-        alias: app.exchange_rate_provider.test
+        alias: app.exchange_rate_provider.swap
+
     app.exchange_rate_provider.test:
         class: Acme\SyliusExamplePlugin\Import\TestExchangeRateProvider
+    app.exchange_rate_provider.swap:
+        class: Acme\SyliusExamplePlugin\Import\SwapExchangeRateProvider
+        arguments:
+            - "@florianv_swap.swap"

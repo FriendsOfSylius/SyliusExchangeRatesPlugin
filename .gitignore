@@ -7,3 +7,6 @@
 
 /etc/build/*
 !/etc/build/.gitkeep
+
+tests/Application/public/assets/*
+tests/Application/.web-server-pid

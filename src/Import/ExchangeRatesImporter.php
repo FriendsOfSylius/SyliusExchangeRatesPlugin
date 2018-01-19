@@ -58,38 +58,56 @@ class ExchangeRatesImporter implements ExchangeRatesImporterInterface
             return;
         }
 
+        $wasAnythingUpdated = false;
         $maxIterationCode = count($currencies) - 1;
 
         /** @var CurrencyInterface $sourceCurrency */
         foreach ($currencies as $i => $sourceCurrency) {
-            $sourceCurrencyCode = $sourceCurrency->getCode();
-
             for ($j = $i + 1; $j <= $maxIterationCode; ++$j) {
                 $targetCurrency = $currencies[$j];
-                $targetCurrencyCode = $targetCurrency->getCode();
 
-                $ratio = $this->exchangeRateProvider->getRatio($sourceCurrencyCode, $targetCurrencyCode);
-
-                /** @var ExchangeRateInterface $exchangeRate */
-                $exchangeRate = $this->exchangeRateRepository->findOneWithCurrencyPair($sourceCurrencyCode, $targetCurrencyCode);
-
-                if (null === $exchangeRate) {
-                    $exchangeRate = $this->exchangeRateFactory->createNew();
-                    $exchangeRate->setSourceCurrency($sourceCurrency);
-                    $exchangeRate->setTargetCurrency($targetCurrency);
-
-                    $this->exchangeRateManager->persist($exchangeRate);
+                if ($this->updateRatio($sourceCurrency, $targetCurrency)) {
+                    $wasAnythingUpdated = true;
                 }
-
-                $exchangeRate->setRatio($ratio);
             }
         }
 
-        $this->exchangeRateManager->flush();
+        if ($wasAnythingUpdated) {
+            $this->exchangeRateManager->flush();
+        }
     }
 
-    private function getPairs(array $codes)
+    private function getExchangeRateForPair($sourceCurrencyCode, $targetCurrencyCode, $sourceCurrency, $targetCurrency)
     {
+        $exchangeRate = $this->exchangeRateRepository->findOneWithCurrencyPair($sourceCurrencyCode, $targetCurrencyCode);
 
+        if (null === $exchangeRate) {
+
+            $exchangeRate = $this->exchangeRateFactory->createNew();
+            $exchangeRate->setSourceCurrency($sourceCurrency);
+            $exchangeRate->setTargetCurrency($targetCurrency);
+
+            $this->exchangeRateManager->persist($exchangeRate);
+        }
+        return $exchangeRate;
+    }
+
+    private function updateRatio(CurrencyInterface $sourceCurrency, CurrencyInterface $targetCurrency)
+    {
+        $sourceCurrencyCode = $sourceCurrency->getCode();
+        $targetCurrencyCode = $targetCurrency->getCode();
+
+        try {
+            $ratio = $this->exchangeRateProvider->getRatio($sourceCurrencyCode, $targetCurrencyCode);
+        } catch (ExchangeRateProviderException $exception) {
+            return false;
+        }
+
+        /** @var ExchangeRateInterface $exchangeRate */
+        $exchangeRate = $this->getExchangeRateForPair($sourceCurrencyCode, $targetCurrencyCode, $sourceCurrency, $targetCurrency);
+
+        $exchangeRate->setRatio($ratio);
+
+        return true;
     }
 }

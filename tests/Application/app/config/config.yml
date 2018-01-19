@@ -56,3 +56,18 @@ fos_rest:
 sylius_theme:
     sources:
         test: ~
+
+florianv_swap:
+    providers:
+        google_finance: ~
+
+sylius_grid:
+    templates:
+        action:
+            import_exchange_rates: "@AcmeSyliusExamplePlugin/importAction.html.twig"
+    grids:
+        sylius_admin_exchange_rate:
+            actions:
+                main:
+                    import:
+                        type: import_exchange_rates
