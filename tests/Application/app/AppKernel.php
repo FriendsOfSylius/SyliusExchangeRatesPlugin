@@ -20,7 +20,7 @@ final class AppKernel extends Kernel
             new \Sylius\Bundle\AdminApiBundle\SyliusAdminApiBundle(),
 
             new \Florianv\SwapBundle\FlorianvSwapBundle(),
-            new \Acme\SyliusExamplePlugin\AcmeSyliusExamplePlugin(),
+            new \FriendsOfSylius\SyliusExchangeRatePlugin\FOSSyliusExchangeRatePlugin(),
         ]);
     }
 

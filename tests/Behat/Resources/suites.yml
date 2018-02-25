@@ -2,12 +2,6 @@
 
 default:
     suites:
-        greeting_customer:
-            contexts_services:
-                - acme_sylius_example.context.ui.shop.welcome
-
-            filters:
-                tags: "@greeting_customer"
         exchange_rates_import:
             contexts_services:
                 - sylius.behat.context.hook.doctrine_orm
@@ -38,6 +32,6 @@ default:
                 - sylius.behat.context.ui.shop.registration
                 - sylius.behat.context.ui.user
 
-                - acme_sylius_example.context.setup.exchange_rates_import
+                - fos_sylius_exchange_rate.context.setup.exchange_rates_import
             filters:
                 tags: "@exchange_rates_import"

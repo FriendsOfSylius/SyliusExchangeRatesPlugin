@@ -1,4 +1,4 @@
-/bin/
+/bin/*
 !/bin/.gitkeep
 
 /vendor/
@@ -8,5 +8,7 @@
 /etc/build/*
 !/etc/build/.gitkeep
 
-tests/Application/public/assets/*
-tests/Application/.web-server-pid
+/tests/Application/yarn.lock
+
+/tests/Application/public/assets/*
+/tests/Application/.web-server-pid

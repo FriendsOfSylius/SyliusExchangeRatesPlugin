@@ -3,40 +3,96 @@
         <img src="http://demo.sylius.org/assets/shop/img/logo.png" />
     </a>
 </p>
-<h1 align="center">Plugin Skeleton</h1>
+<h1 align="center">FOSSyliusExchangeRatePlugin</h1>
 <p align="center">
-    <a href="https://packagist.org/packages/sylius/plugin-skeleton" title="License">
-        <img src="https://img.shields.io/packagist/l/sylius/plugin-skeleton.svg" />
+    <a href="https://packagist.org/packages/friendsofsylius/sylius-exchange-rate-plugin" title="License">
+        <img src="https://img.shields.io/packagist/l/friendsofsylius/sylius-exchange-rate-plugin.svg" />
     </a>
-    <a href="https://packagist.org/packages/sylius/plugin-skeleton" title="Version">
-        <img src="https://img.shields.io/packagist/v/sylius/plugin-skeleton.svg" />
+    <a href="https://packagist.org/packages/friendsofsylius/sylius-exchange-rate-plugin" title="Version">
+        <img src="https://img.shields.io/packagist/v/friendsofsylius/sylius-exchange-rate-plugin.svg" />
     </a>
-    <a href="http://travis-ci.org/Sylius/PluginSkeleton" title="Build status">
-        <img src="https://img.shields.io/travis/Sylius/PluginSkeleton/master.svg" />
+    <a href="http://travis-ci.org/FriendsOfSylius/SyliusExchangeRatePlugin" title="Build status">
+        <img src="https://img.shields.io/travis/FriendsOfSylius/SyliusExchangeRatePlugin/master.svg" />
     </a>
-    <a href="https://scrutinizer-ci.com/g/Sylius/PluginSkeleton/" title="Scrutinizer">
-        <img src="https://img.shields.io/scrutinizer/g/Sylius/PluginSkeleton.svg" />
+    <a href="https://scrutinizer-ci.com/g/FriendsOfSylius/SyliusExchangeRatePlugin/" title="Scrutinizer">
+        <img src="https://img.shields.io/scrutinizer/g/FriendsOfSylius/SyliusExchangeRatePlugin.svg" />
     </a>
 </p>
 
 ## Installation
 
-1. Run `composer create-project sylius/plugin-skeleton ProjectName`.
+1. Require and install the plugin
 
-2. From the plugin skeleton root directory, run the following commands:
+  - Run `composer require friendsofsylius/sylius-exchange-rate-plugin --dev`
+
+2. Add plugin dependencies to your AppKernel.php file:
+
+````php
+public function registerBundles()
+{
+    return array_merge(parent::registerBundles(), [
+        ...
+        new \Florianv\SwapBundle\FlorianvSwapBundle(),
+        new \FriendsOfSylius\SyliusExchangeRatePlugin\FOSSyliusExchangeRatePlugin(),
+    ]);
+}
+````
+
+## Configuration
+
+### Application configuration:
+
+```yaml
+sylius_grid:
+    templates:
+        action:
+            import_exchange_rates: "@FOSSyliusExchangeRatePlugin/importAction.html.twig"
+    grids:
+        sylius_admin_exchange_rate:
+            actions:
+                main:
+                    import:
+                        type: import_exchange_rates
+
+florianv_swap:
+    providers:
+        # choose the provider you want, for example google finance
+        # for the full list of options see:
+        # https://github.com/florianv/symfony-swap/blob/master/Resources/doc/index.md#builtin-providers
+        google_finance: ~
+
+fos_sylius_exchange_rate: ~
+```
+
+### Routing configuration (only necessary if `web_ui` is set to `true`):
+
+```yaml
+sylius_exchange_rate:
+    resource: "@FOSSyliusExchangeRatePlugin/Resources/config/routing.yml"
+```
+
+## Usage
+
+### CLI commands
+
+  - Import configured exchange rates
 
     ```bash
+    $ bin/console sylius:import-exchange-rates
+    ```
+
+### Running plugin tests
+
+  - Test application install
+
+    ```bash
+    $ composer install
     $ (cd tests/Application && yarn install)
     $ (cd tests/Application && yarn run gulp)
     $ (cd tests/Application && bin/console assets:install web -e test)
     
     $ (cd tests/Application && bin/console doctrine:database:create -e test)
     $ (cd tests/Application && bin/console doctrine:schema:create -e test)
-    ```
-
-## Usage
-
-### Running plugin tests
 
   - PHPUnit
 
@@ -53,7 +109,7 @@
   - Behat (non-JS scenarios)
 
     ```bash
-    $ bin/behat --tags="~@javascript"
+    $ bin/behat features --tags="~@javascript"
     ```
 
   - Behat (JS scenarios)
@@ -74,7 +130,7 @@
     4. Run Behat:
     
         ```bash
-        $ bin/behat --tags="@javascript"
+        $ bin/behat features --tags="@javascript"
         ```
 
 ### Opening Sylius with your plugin

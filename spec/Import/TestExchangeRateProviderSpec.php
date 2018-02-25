@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Acme\SyliusExamplePlugin\Import;
+namespace spec\FriendsOfSylius\SyliusExchangeRatePlugin\Import;
 
-use Acme\SyliusExamplePlugin\Import\TestExchangeRateProvider;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\TestExchangeRateProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Acme\SyliusExamplePlugin\Import\ExchangeRateProviderInterface;
-use Acme\SyliusExamplePlugin\Import\TestExchangeRateProviderInterface;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\ExchangeRateProviderInterface;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\TestExchangeRateProviderInterface;
 
 class TestExchangeRateProviderSpec extends ObjectBehavior
 {

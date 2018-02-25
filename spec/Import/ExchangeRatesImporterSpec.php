@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Acme\SyliusExamplePlugin\Import;
+namespace spec\FriendsOfSylius\SyliusExchangeRatePlugin\Import;
 
-use Acme\SyliusExamplePlugin\Import\ExchangeRateProviderException;
-use Acme\SyliusExamplePlugin\Import\ExchangeRatesImporter;
-use Acme\SyliusExamplePlugin\Import\ExchangeRatesImporterInterface;
-use Acme\SyliusExamplePlugin\Import\ExchangeRateProviderInterface;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\ExchangeRateProviderException;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\ExchangeRatesImporter;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\ExchangeRatesImporterInterface;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\ExchangeRateProviderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\SyliusExamplePlugin\Import;
+namespace FriendsOfSylius\SyliusExchangeRatePlugin\Import;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Sylius\Component\Currency\Model\CurrencyInterface;
@@ -82,7 +82,7 @@ class ExchangeRatesImporter implements ExchangeRatesImporterInterface
         $exchangeRate = $this->exchangeRateRepository->findOneWithCurrencyPair($sourceCurrencyCode, $targetCurrencyCode);
 
         if (null === $exchangeRate) {
-
+            /** @var ExchangeRateInterface $exchangeRate */
             $exchangeRate = $this->exchangeRateFactory->createNew();
             $exchangeRate->setSourceCurrency($sourceCurrency);
             $exchangeRate->setTargetCurrency($targetCurrency);

@@ -2,6 +2,10 @@ parameters:
     locale: en_US
     secret: "Heron is the best animal in the world!"
 
+services:
+    sylius.exchange_rate_provider:
+        alias: sylius.exchange_rate_provider.test
+
 imports:
     - { resource: "@SyliusCoreBundle/Resources/config/app/config.yml" }
     - { resource: "@SyliusAdminBundle/Resources/config/app/config.yml" }
@@ -10,7 +14,7 @@ imports:
 
     - { resource: "../../../../vendor/sylius/sylius/app/config/security.yml" }
 
-    - { resource: "@AcmeSyliusExamplePlugin/Resources/config/services.yml" }
+    - { resource: "@FOSSyliusExchangeRatePlugin/Resources/config/services.yml" }
 
 framework:
     translator: { fallbacks: ["%locale%", "en"] }
@@ -27,6 +31,16 @@ framework:
     session:
         storage_id: session.storage.mock_file
     test: ~
+
+monolog:
+    handlers:
+        main:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        firephp:
+            type: firephp
+            level: info
 
 swiftmailer:
     disable_delivery: true
@@ -64,7 +78,7 @@ florianv_swap:
 sylius_grid:
     templates:
         action:
-            import_exchange_rates: "@AcmeSyliusExamplePlugin/importAction.html.twig"
+            import_exchange_rates: "@FOSSyliusExchangeRatePlugin/importAction.html.twig"
     grids:
         sylius_admin_exchange_rate:
             actions:

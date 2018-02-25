@@ -3,19 +3,10 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <!-- Put your Behat services here -->
-
-        <service id="acme_sylius_example.context.ui.shop.welcome" class="Tests\Acme\SyliusExamplePlugin\Behat\Context\Ui\Shop\WelcomeContext">
-            <argument type="service" id="acme_sylius_example.page.shop.static_welcome" />
-            <argument type="service" id="acme_sylius_example.page.shop.dynamic_welcome" />
+        <service id="fos_sylius_exchange_rate.context.setup.exchange_rates_import" class="Tests\FriendsOfSylius\SyliusExchangeRatePlugin\Behat\Context\Setup\ExchangeRatesImportContext">
+            <argument type="service" id="__symfony__.sylius.exchange_rates_importer" />
+            <argument type="service" id="__symfony__.sylius.exchange_rate_provider.test" />
             <tag name="fob.context_service" />
         </service>
-        <service id="acme_sylius_example.context.setup.exchange_rates_import" class="Tests\Acme\SyliusExamplePlugin\Behat\Context\Setup\ExchangeRatesImportContext">
-            <argument type="service" id="__symfony__.app.exchange_rates_importer" />
-            <argument type="service" id="__symfony__.app.exchange_rate_provider" />
-            <tag name="fob.context_service" />
-        </service>
-
-        <service id="acme_sylius_example.page.shop.static_welcome" class="Tests\Acme\SyliusExamplePlugin\Behat\Page\Shop\StaticWelcomePage" parent="sylius.behat.symfony_page" public="false" />
-        <service id="acme_sylius_example.page.shop.dynamic_welcome" class="Tests\Acme\SyliusExamplePlugin\Behat\Page\Shop\DynamicWelcomePage" parent="sylius.behat.symfony_page" public="false" />
     </services>
 </container>

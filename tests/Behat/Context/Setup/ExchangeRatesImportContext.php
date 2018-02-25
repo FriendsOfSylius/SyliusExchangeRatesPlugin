@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Acme\SyliusExamplePlugin\Behat\Context\Setup;
+namespace Tests\FriendsOfSylius\SyliusExchangeRatePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
-use Acme\SyliusExamplePlugin\Import\ExchangeRatesImporterInterface;
-use Acme\SyliusExamplePlugin\Import\TestExchangeRateProviderInterface;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\ExchangeRatesImporterInterface;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\TestExchangeRateProviderInterface;
 use Behat\Gherkin\Node\TableNode;
 
 class ExchangeRatesImportContext implements Context

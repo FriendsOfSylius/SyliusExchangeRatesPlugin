@@ -1,4 +1,4 @@
 app_admin_exchange_rate_import:
     path: /exchange-rates/import
     defaults:
-        _controller: AcmeSyliusExamplePlugin:ExchangeRates:import
+        _controller: FOSSyliusExchangeRatePlugin:ExchangeRates:import

@@ -1,19 +1,27 @@
 services:
-    app.exchange_rates_importer:
-        class: Acme\SyliusExamplePlugin\Import\ExchangeRatesImporter
+    sylius.exchange_rates_importer:
+        class: FriendsOfSylius\SyliusExchangeRatePlugin\Import\ExchangeRatesImporter
         arguments:
             - "@sylius.repository.currency"
             - "@sylius.manager.exchange_rate"
-            - "@app.exchange_rate_provider"
+            - "@sylius.exchange_rate_provider"
             - "@sylius.repository.exchange_rate"
             - "@sylius.factory.exchange_rate"
 
-    app.exchange_rate_provider:
-        alias: app.exchange_rate_provider.swap
+    sylius.exchange_rate_provider:
+        alias: sylius.exchange_rate_provider.swap
 
-    app.exchange_rate_provider.test:
-        class: Acme\SyliusExamplePlugin\Import\TestExchangeRateProvider
-    app.exchange_rate_provider.swap:
-        class: Acme\SyliusExamplePlugin\Import\SwapExchangeRateProvider
+    sylius.exchange_rate_provider.swap:
+        class: FriendsOfSylius\SyliusExchangeRatePlugin\Import\SwapExchangeRateProvider
         arguments:
             - "@florianv_swap.swap"
+
+    sylius.exchange_rate_provider.test:
+        class: FriendsOfSylius\SyliusExchangeRatePlugin\Import\TestExchangeRateProvider
+
+    sylius.exchange_rate_import_command:
+        class: FriendsOfSylius\SyliusExchangeRatePlugin\Command\ImportExchangeRatesCommand
+        arguments:
+            - "@sylius.exchange_rates_importer"
+        tags:
+            - { name: 'console.command', command: 'sylius:import-exchange-rates' }

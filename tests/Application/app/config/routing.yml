@@ -3,9 +3,6 @@ sylius:
 
 # Put your own routes here
 
-acme_sylius_example_shop:
-    resource: "@AcmeSyliusExamplePlugin/Resources/config/app/shop_routing.yml"
-
-acme_sylius_example_admin:
-    resource: "@AcmeSyliusExamplePlugin/Resources/config/app/admin_routing.yml"
+sylius_exchange_rate:
+    resource: "@FOSSyliusExchangeRatePlugin/Resources/config/routing.yml"
     prefix: /admin

@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Acme\SyliusExamplePlugin\Import;
+namespace spec\FriendsOfSylius\SyliusExchangeRatePlugin\Import;
 
-use Acme\SyliusExamplePlugin\Import\SwapExchangeRateProvider;
-use Acme\SyliusExamplePlugin\Import\ExchangeRateProviderInterface;
-use Acme\SyliusExamplePlugin\Import\ExchangeRateProviderException;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\SwapExchangeRateProvider;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\ExchangeRateProviderInterface;
+use FriendsOfSylius\SyliusExchangeRatePlugin\Import\ExchangeRateProviderException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Swap\Exception\Exception;

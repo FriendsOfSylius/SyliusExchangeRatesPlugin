@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\SyliusExamplePlugin\Import;
+namespace FriendsOfSylius\SyliusExchangeRatePlugin\Import;
 
 class TestExchangeRateProvider implements TestExchangeRateProviderInterface
 {

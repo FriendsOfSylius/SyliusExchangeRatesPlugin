@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\SyliusExamplePlugin\Import;
+namespace FriendsOfSylius\SyliusExchangeRatePlugin\Import;
 
 use Swap\Exception\Exception;
 use Swap\SwapInterface;
